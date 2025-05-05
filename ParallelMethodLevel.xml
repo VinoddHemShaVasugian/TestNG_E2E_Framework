@@ -1,12 +1,15 @@
 <!DOCTYPE suite SYSTEM "./com/test/resources/testng-1.0.dtd">
-<suite name="MethodLevelParallelExecutionSuite" parallel="methods" thread-count="2">
-    <test name="LoginTests">
-        <classes>
-      <class name="login.ValidLoginTest"/>
-      <class name="login.InvalidLoginTest"/>
-        </classes>
-    </test>
-    	<listeners>
+<suite name="MethodLevelParallelExecutionSuite" parallel="methods"
+	thread-count="4">
+	<test name="swagLabsTest">
+		<classes>
+			<class name="login.ValidLoginTest" />
+			<class name="login.InvalidLoginTest" />
+			<class name="checkoutFlow.CheckoutFlowTest" />
+			<class name="addToCart.AddProductToCartTest" />
+		</classes>
+	</test>
+	<listeners>
 		<listener class-name="io.qameta.allure.testng.AllureTestNg" />
 	</listeners>
 </suite>

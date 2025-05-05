@@ -42,11 +42,13 @@ public class SuperTestNG {
 		String browserType = Keywords.getData(sConfigFile, "LAUNCH", 0, 2);
 		Keywords keywords = new Keywords(browserType);
 		driver.set(keywords.getDriver());
-		getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-		getDriver().manage().window().maximize();
-		getDriver().manage().deleteAllCookies();
+		WebDriver currentDriver = getDriver();
+		currentDriver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
+		currentDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+		currentDriver.manage().window().maximize();
+		currentDriver.manage().deleteAllCookies();
 		String url = Keywords.getData(sConfigFile, "LAUNCH", 1, 2);
-		getDriver().get(url);
+		currentDriver.get(url);
 	}
 
 	/**
@@ -56,7 +58,7 @@ public class SuperTestNG {
 	@AfterMethod
 	public void tearDown() {
 		if (getDriver() != null) {
-			getDriver().quit();
+			getDriver().close();
 			driver.remove();
 		}
 		try {

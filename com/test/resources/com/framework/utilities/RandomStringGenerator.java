@@ -20,7 +20,7 @@ public class RandomStringGenerator {
 	 * @param length The length of the string to generate.
 	 * @return A randomly generated alphanumeric string.
 	 */
-	public static synchronized String generateRandomStringAlphaNumeric(int length) {
+	public static String generateRandomStringAlphaNumeric(int length) {
 		StringBuilder sb = new StringBuilder(length);
 		for (int i = 0; i < length; i++) {
 			int randomIndex = RANDOM.nextInt(CHARACTERS.length());
@@ -35,7 +35,7 @@ public class RandomStringGenerator {
 	 * @param length The length of the string to generate.
 	 * @return A randomly generated alphabetic string.
 	 */
-	public static synchronized String generateRandomStringAlphabet(int length) {
+	public static String generateRandomStringAlphabet(int length) {
 		StringBuilder sb = new StringBuilder(length);
 		for (int i = 0; i < length; i++) {
 			int randomIndex = RANDOM.nextInt(ALPHABET.length());
@@ -50,7 +50,7 @@ public class RandomStringGenerator {
 	 * @param length The length of the string to generate.
 	 * @return A randomly generated numeric string.
 	 */
-	public static synchronized String generateRandomNumber(int length) {
+	public static String generateRandomNumber(int length) {
 		StringBuilder sb = new StringBuilder(length);
 		for (int i = 0; i < length; i++) {
 			int randomIndex = RANDOM.nextInt(NUMERIC.length());
@@ -66,7 +66,7 @@ public class RandomStringGenerator {
 	 * 
 	 * @return A formatted, auto-generated name.
 	 */
-	public static synchronized String autoGenerateName() {
+	public static String autoGenerateName() {
 		return firstCharUppercase(generateRandomStringAlphabet(5)).replaceAll("f", "z").replaceAll("F", "Z");
 	}
 

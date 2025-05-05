@@ -20,6 +20,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -57,7 +58,14 @@ public class Keywords {
 		} else if (browser.equals("Google Chrome")) {
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--remote-allow-origins=*");
+			options.addArguments("--no-sandbox");
+			options.addArguments("--disable-dev-shm-usage");
+			options.addArguments("--disable-gpu");
+			options.addArguments("--disable-setuid-sandbox");
+			options.addArguments("--ignore-https-errors");
 			options.addArguments("--ignore-certificate-errors");
+			options.addArguments(CapabilityType.ACCEPT_INSECURE_CERTS);
+			System.setProperty("webdriver.chrome.verboseLogging", "true");
 			WebDriverManager.chromedriver().setup();
 			driver = new ChromeDriver(options);
 		} else {
@@ -88,7 +96,7 @@ public class Keywords {
 	public WebElement getElementWithExplicitWait(String locname, String locvalue) {
 		WebElement elm = null;
 		try {
-			WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
+			WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(30));
 			if (locname.equalsIgnoreCase("id"))
 				elm = wait.until(ExpectedConditions.presenceOfElementLocated(By.id(locvalue)));
 			else if (locname.equalsIgnoreCase("name"))
@@ -123,7 +131,7 @@ public class Keywords {
 	public WebElement getElement(String locname, String locvalue) {
 		WebElement elm = getElementWithExplicitWait(locname, locvalue);
 		try {
-			getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+			getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 			if (locname.equalsIgnoreCase("id"))
 				elm = getDriver().findElement(By.id(locvalue));
 			else if (locname.equalsIgnoreCase("name"))
@@ -152,7 +160,7 @@ public class Keywords {
 		index = index - 1; // Adjust index to be zero-based
 		WebElement elm = null;
 		try {
-			getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+			getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 			if (locname.equalsIgnoreCase("id"))
 				elm = getDriver().findElements(By.id(locvalue)).get(index);
 			else if (locname.equalsIgnoreCase("name"))
@@ -325,7 +333,7 @@ public class Keywords {
 	 * @param c     The column number of the cell.
 	 * @return The data from the specified cell as a String.
 	 */
-	public static synchronized String getData(String path, String Sheet, int r, int c) {
+	public static String getData(String path, String Sheet, int r, int c) {
 		FileInputStream fis = null;
 		try {
 			fis = new FileInputStream(path);
