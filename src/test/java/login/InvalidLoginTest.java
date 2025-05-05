@@ -13,43 +13,42 @@
  */
 package login;
 
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.baseTest.SuperTestNG;
 import com.framework.library.Keywords;
 import com.framework.utilities.RandomStringGenerator;
-import com.swaglab.pages.LoginPage;
+import com.swaglab.pages.login.LoginPage;
 
 public class InvalidLoginTest extends SuperTestNG {
 
-    /**
-     * Test case to validate invalid login functionality.
-     *
-     * @param userName The username to be used for login.
-     * @param password The password to be used for login.
-     */
-    @Test(dataProvider = "invalidLogin")
-    public void testInvalidLogin(String userName, String password) {
-        LoginPage loginPage = new LoginPage();
-        loginPage.enterUserName(userName);
-        loginPage.enterPassword(password);
-        loginPage.clickSignIn();
-        String loginErrorMessage = Keywords.getData(stestDataFile, "Login", 2, 5);
-        loginPage.verifyLoginErrorMessage(loginErrorMessage);
-    }
+	/**
+	 * Test case to validate invalid login functionality.
+	 *
+	 * @param userName The user name to be used for login.
+	 * @param password The password to be used for login.
+	 */
+	@Test(dataProvider = "invalidLogin")
+	public void testInvalidLogin(String userName, String password) {
+		LoginPage loginPage = new LoginPage();
+		loginPage.enterUserName(userName);
+		loginPage.enterPassword(password);
+		loginPage.clickSignIn();
+		String loginErrorMessage = Keywords.getData(stestDataFile, "Login", 2, 5);
+		Assert.assertTrue(loginPage.verifyProductpage(loginErrorMessage),
+				"Login error message is not displayed as expected.");
+	}
 
-    /**
-     * DataProvider method to supply invalid login credentials.
-     *
-     * @return A 2D array containing invalid username and password combinations.
-     */
-    @DataProvider(name = "invalidLogin", parallel = true)
-    public Object[][] Testing() {
-        return new Object[][] { 
-            { "userinvalid1", "passwrg" }, 
-            { RandomStringGenerator.generateRandomString(6), RandomStringGenerator.generateRandomString(10) } 
-        };
-    }
+	/**
+	 * DataProvider method to supply invalid login credentials.
+	 *
+	 * @return A 2D array containing invalid username and password combinations.
+	 */
+	@DataProvider(name = "invalidLogin", parallel = true)
+	public Object[][] Testing() {
+		return new Object[][] { { "userinvalid1", "passwrg" }, { RandomStringGenerator.generateRandomStringAlphabet(6),
+				RandomStringGenerator.generateRandomStringAlphaNumeric(10) } };
+	}
 }
-// Note: The above code is a test case for validating the invalid login functionality of the Swag Labs application.

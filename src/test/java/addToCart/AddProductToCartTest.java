@@ -5,33 +5,33 @@ import org.testng.annotations.Test;
 
 import com.baseTest.SuperTestNG;
 import com.swaglab.library.ProjectSpecific;
-import com.swaglab.pages.CartPage;
-import com.swaglab.pages.HomePage;
+import com.swaglab.pages.checkoutFlow.CheckoutPage;
+import com.swaglab.pages.homepage.HomePage;
 
 /**
  * Represents the test class for adding a product to the cart in the Swag Labs
  * application. Contains a test method to verify the functionality of adding a
- * product to the cart.
+ * product to the cart and count of added item.
  */
 public class AddProductToCartTest extends SuperTestNG {
 	ProjectSpecific projectSpecific = new ProjectSpecific();
-	CartPage cartPage = new CartPage();
+	CheckoutPage cartPage = new CheckoutPage();
 	HomePage homePage = new HomePage();
 	String sProductName;
 
 	/**
 	 * Tests the functionality of adding a product to the cart. Logs into the
-	 * application, retrieves the first product name, adds the product to the cart,
+	 * application, retrieves the first product name, adding the product to the cart,
 	 * navigates to the cart page, and verifies that the product is present in the
-	 * cart.
+	 * cart and count of added item.
 	 */
 	@Test()
 	public void testAddToCart() {
 		projectSpecific.login();
 		sProductName = homePage.getFirstProductName();
 		homePage.addProductToCart(sProductName);
+		Assert.assertTrue(homePage.verifyItemCountInCart(1), "Item count mismatch in cart");
 		homePage.clickCartIcon();
-		boolean status = cartPage.verifyProductOnCart(sProductName);
-		Assert.assertEquals(status, true, "Product is not added to cart");
+		Assert.assertTrue(cartPage.verifyProductOnCart(sProductName), "Product is not added to cart");
 	}
 }

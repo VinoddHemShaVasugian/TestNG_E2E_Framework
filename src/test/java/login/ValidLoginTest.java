@@ -6,13 +6,13 @@ import org.testng.annotations.Test;
 import com.baseTest.SuperTestNG;
 import com.framework.library.RetryAnalyzer;
 import com.swaglab.library.ProjectSpecific;
-import com.swaglab.pages.HomePage;
-import com.swaglab.pages.ProductPage;
+import com.swaglab.pages.addToCart.ProductPage;
+import com.swaglab.pages.homepage.HomePage;
 
 /**
  * Represents the test class for validating a successful login to the Swag Labs
  * application. Contains a test method to verify the login functionality and
- * product navigation.
+ * product page navigation.
  */
 public class ValidLoginTest extends SuperTestNG {
 	ProjectSpecific projectSpecific = new ProjectSpecific();
@@ -30,6 +30,7 @@ public class ValidLoginTest extends SuperTestNG {
 		projectSpecific.login();
 		sProductName = homePage.getFirstProductName();
 		homePage.navigateFirstProductName(sProductName);
-		Assert.assertEquals(productPage.verifyTheRequiredProductOnProductPage(sProductName), true);
+		Assert.assertTrue(productPage.verifyTheRequiredProductOnProductPage(sProductName),
+				"Product details is not available on product page (OR) User navigated to incorrect product page");
 	}
 }

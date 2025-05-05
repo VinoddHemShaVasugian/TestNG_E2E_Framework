@@ -15,17 +15,23 @@
  * - `verifyHomepage(String expectedResult)`: Verifies that the homepage displays the expected result.
  * - `verifyLoginErrorMessage(String loginErrorMessage)`: Verifies that the login error message matches the expected message.
  */
-package com.swaglab.pages;
+package com.swaglab.pages.login;
 
 import com.framework.library.Keywords;
 
 public class LoginPage extends Keywords {
 
+	private String submitButton = ".submit-button";
+	private String userNameField = "#user-name";
+	private String passwordField = "#password";
+	private String errorMessage = "div.error-message-container h3";
+	private String productPageTitle = "span.title";
+
 	/**
 	 * Clicks the sign-in button on the login page.
 	 */
 	public void clickSignIn() {
-		clickElm("cssSelector", ".submit-button");
+		clickElm("cssSelector", submitButton);
 	}
 
 	/**
@@ -34,7 +40,7 @@ public class LoginPage extends Keywords {
 	 * @param userName The username to be entered.
 	 */
 	public void enterUserName(String userName) {
-		enterText("cssSelector", "#user-name", userName);
+		enterText("cssSelector", userNameField, userName);
 	}
 
 	/**
@@ -43,7 +49,7 @@ public class LoginPage extends Keywords {
 	 * @param password The password to be entered.
 	 */
 	public void enterPassword(String password) {
-		enterText("cssSelector", "#password", password);
+		enterText("cssSelector", passwordField, password);
 	}
 
 	/**
@@ -53,7 +59,7 @@ public class LoginPage extends Keywords {
 	 * @return True if the expected text matches, otherwise false.
 	 */
 	public boolean verifyProductpage(String expectedResult) {
-		return verifyText("cssSelector", "span.title", expectedResult);
+		return verifyText("cssSelector", productPageTitle, expectedResult);
 	}
 
 	/**
@@ -62,6 +68,6 @@ public class LoginPage extends Keywords {
 	 * @param loginErrorMessage The expected error message to verify.
 	 */
 	public void verifyLoginErrorMessage(String loginErrorMessage) {
-		verifyText("cssSelector", "div.error-message-container h3", loginErrorMessage);
+		verifyText("cssSelector", errorMessage, loginErrorMessage);
 	}
 }

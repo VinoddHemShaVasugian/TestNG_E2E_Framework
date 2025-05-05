@@ -223,6 +223,37 @@ public class Keywords {
 	}
 
 	/**
+	 * Verifies the presence of an element based on a dynamic XPath and value.
+	 * 
+	 * @param xpathTemplate The XPath template with a placeholder for the dynamic
+	 *                      value.
+	 * @param value         The dynamic value to be inserted into the XPath.
+	 * @return True if the element is found, false otherwise.
+	 */
+	public boolean verifyElementWithDynamicValue(String xpathTemplate, String value) {
+		String dynamicXPath = xpathTemplate.replace("{value}", value);
+		return verifyElement("xpath", dynamicXPath);
+	}
+
+	/**
+	 * Verifies if a web element identified by the specified locator type and value
+	 * is displayed on the page.
+	 *
+	 * @param locaname The type of locator (e.g., "id", "name", "xpath").
+	 * @param locvalue The value of the locator.
+	 * @return True if the element is displayed, false otherwise.
+	 */
+	private boolean verifyElement(String locaname, String locvalue) {
+		try {
+			return getElement(locaname, locvalue).isDisplayed();
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Error verifying element with locator: " + locaname + " and value: " + locvalue,
+					e);
+			return false;
+		}
+	}
+
+	/**
 	 * Captures a screenshot of the current browser window and saves it to the
 	 * specified file.
 	 *

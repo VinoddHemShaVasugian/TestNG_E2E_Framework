@@ -1,4 +1,4 @@
-package com.swaglab.pages;
+package com.swaglab.pages.homepage;
 
 import org.openqa.selenium.WebElement;
 
@@ -9,6 +9,9 @@ import com.framework.library.Keywords;
  * interact with elements on the Home Page.
  */
 public class HomePage extends Keywords {
+	private String productNames = "div.inventory_item_name";
+	private String shoppingCartIcon = ".shopping_cart_link";
+	private String shoppingCartItemCount = ".shopping_cart_badge";
 
 	/**
 	 * Retrieves the name of the first product displayed on the Home Page.
@@ -16,8 +19,8 @@ public class HomePage extends Keywords {
 	 * @return The name of the first product as a String.
 	 */
 	public String getFirstProductName() {
-		WebElement productdName = getSpecificElementFromMultipleElement("cssSelector", "div.inventory_item_name", 1);
-		return productdName.getText();
+		WebElement productName = getSpecificElementFromMultipleElement("cssSelector", productNames, 1);
+		return productName.getText();
 	}
 
 	/**
@@ -28,7 +31,7 @@ public class HomePage extends Keywords {
 	 * @return True if the operation was successful, false otherwise.
 	 */
 	public boolean navigateFirstProductName(String sProductName) {
-		WebElement productdName = getSpecificElementFromMultipleElement("cssSelector", "div.inventory_item_name", 1);
+		WebElement productdName = getSpecificElementFromMultipleElement("cssSelector", productNames, 1);
 		productdName.click();
 		return true;
 	}
@@ -50,6 +53,17 @@ public class HomePage extends Keywords {
 	 * @return True if the operation was successful, false otherwise.
 	 */
 	public boolean clickCartIcon() {
-		return clickElm("cssSelector", ".shopping_cart_link");
+		return clickElm("cssSelector", shoppingCartIcon);
 	}
+
+	/**
+	 * Verifies if the item count in the shopping cart matches the specified value.
+	 *
+	 * @param itemCount The expected item count in the shopping cart.
+	 * @return True if the item count matches the specified value, false otherwise.
+	 */
+	public boolean verifyItemCountInCart(int itemCount) {
+		return verifyText("cssSelector", shoppingCartItemCount, String.valueOf(itemCount));
+	}
+
 }

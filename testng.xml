@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!DOCTYPE suite SYSTEM "./com/test/resources/testng-1.0.dtd">
 <suite name="FullSuite">
-  <test thread-count="5" name="Test">
+  <test thread-count="5" name="E2E_Test">
     <classes>
       <class name="checkoutFlow.CheckoutFlowTest"/>
       <class name="addToCart.AddProductToCartTest"/>
-      <class name="com.baseTest.SuperTestNG"/>
       <class name="login.InvalidLoginTest"/>
       <class name="login.ValidLoginTest"/>
     </classes>
-  </test> <!-- Test -->
+  </test> <!-- E2E_Test -->
 </suite> <!-- FullSuite -->

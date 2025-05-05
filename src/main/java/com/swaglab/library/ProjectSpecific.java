@@ -14,7 +14,7 @@ package com.swaglab.library;
 
 import com.baseTest.SuperTestNG;
 import com.framework.library.Keywords;
-import com.swaglab.pages.LoginPage;
+import com.swaglab.pages.login.LoginPage;
 
 public class ProjectSpecific extends Keywords {
 
