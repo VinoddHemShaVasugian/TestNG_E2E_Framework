@@ -3,12 +3,12 @@
 <suite name="TestLevelParallelExecutionSuite" parallel="tests" thread-count="2">
 	<test name="PositiveScenarios">
 		<classes>
-			<class name="login.ValidLogin" />
+			<class name="login.ValidLoginTest" />
 		</classes>
 	</test>
 	<test name="NegativeScenarios">
 		<classes>
-			<class name="login.InvalidLogin" />
+			<class name="login.InvalidLoginTest" />
 		</classes>
 	</test> <!-- LoginTest -->
 		<listeners>

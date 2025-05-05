@@ -5,13 +5,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -21,9 +20,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -59,6 +55,7 @@ public class Keywords {
 		} else if (browser.equals("Google Chrome")) {
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--remote-allow-origins=*");
+			options.addArguments("--ignore-certificate-errors");
 			WebDriverManager.chromedriver().setup();
 			driver = new ChromeDriver(options);
 		} else {
@@ -104,7 +101,36 @@ public class Keywords {
 			else
 				LOGGER.warning("Invalid locator name: " + locname);
 		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, "Error finding element with locator: " + locname + " and value: " + locvalue, e);
+			LOGGER.warning("Error finding element with locator: " + locname + " and value: " + locvalue);
+		}
+		return (elm);
+	}
+
+	public WebElement getSpecificElementFromMultipleElement(String locname, String locvalue, int index) {
+		index = index - 1; // Adjust index to be zero-based
+		WebElement elm = null;
+		try {
+			getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+			if (locname.equalsIgnoreCase("id"))
+				elm = getDriver().findElements(By.id(locvalue)).get(index);
+			else if (locname.equalsIgnoreCase("name"))
+				elm = getDriver().findElements(By.name(locvalue)).get(index);
+			else if (locname.equalsIgnoreCase("className"))
+				elm = getDriver().findElements(By.className(locvalue)).get(index);
+			else if (locname.equalsIgnoreCase("linkText"))
+				elm = getDriver().findElements(By.linkText(locvalue)).get(index);
+			else if (locname.equalsIgnoreCase("partialLinkText"))
+				elm = getDriver().findElements(By.partialLinkText(locvalue)).get(index);
+			else if (locname.equalsIgnoreCase("xpath"))
+				elm = getDriver().findElements(By.xpath(locvalue)).get(index);
+			else if (locname.equalsIgnoreCase("cssSelector"))
+				elm = getDriver().findElements(By.cssSelector(locvalue)).get(index);
+			else if (locname.equalsIgnoreCase("tagname"))
+				elm = getDriver().findElements(By.tagName(locvalue)).get(index);
+			else
+				LOGGER.warning("Invalid locator name: " + locname);
+		} catch (Exception e) {
+			LOGGER.warning("Error finding element with locator: " + locname + " and value: " + locvalue);
 		}
 		return (elm);
 	}
@@ -125,6 +151,27 @@ public class Keywords {
 			LOGGER.info("Clicked element with locator: " + locaname + " and value: " + locvalue);
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "Error clicking element with locator: " + locaname + " and value: " + locvalue, e);
+		}
+		return (bStatus);
+	}
+
+	/**
+	 * Verifies if a web element identified by the specified locator type and value
+	 * is visible on the page.
+	 *
+	 * @param locaname The type of locator (e.g., "id", "name", "xpath").
+	 * @param locvalue The value of the locator.
+	 * @return True if the element is visible, false otherwise.
+	 */
+	public boolean elementIsVisible(String locaname, String locvalue) {
+		boolean bStatus = false;
+		try {
+			WebElement elm = getElement(locaname, locvalue);
+			elm.isDisplayed();
+			bStatus = true;
+			LOGGER.info("Element displayed with locator: " + locaname + " and value: " + locvalue);
+		} catch (Exception e) {
+			LOGGER.warning("Element is not displayed with locator: " + locaname + " and value: " + locvalue);
 		}
 		return (bStatus);
 	}
@@ -154,99 +201,6 @@ public class Keywords {
 	}
 
 	/**
-	 * Selects an item from a drop down menu by visible text.
-	 * 
-	 * @param locaname The type of locator (e.g., "id", "name", "xpath").
-	 * @param locvalue The value of the locator.
-	 * @param itm      The visible text of the item to select.
-	 * @return True if the item was selected successfully, false otherwise.
-	 */
-	public boolean selectItem(String locaname, String locvalue, String itm) {
-		boolean bStatus = false;
-		Select itms = null;
-		try {
-			WebElement elm = getElement(locaname, locvalue);
-			itms = new Select(elm);
-			itms.selectByVisibleText(itm);
-			bStatus = true;
-			LOGGER.info(
-					"Selected item: " + itm + " from dropdown with locator: " + locaname + " and value: " + locvalue);
-		} catch (Exception e) {
-			itms.selectByValue(itm);
-		}
-		return (bStatus);
-	}
-
-	/**
-	 * Checks or unchecks a checkbox based on the specified value.
-	 * 
-	 * @param locaname The type of locator (e.g., "id", "name", "xpath").
-	 * @param locvalue The value of the locator.
-	 * @param val      1 to check the checkbox, 0 to uncheck it.
-	 * @return True if the action was successful, false otherwise.
-	 */
-	public boolean setElm(String locaname, String locvalue, int val) {
-		boolean bStatus = false;
-		try {
-			WebElement elm = getElement(locaname, locvalue);
-			if (val == 1) {
-				if (!elm.isSelected())
-					elm.click();
-				bStatus = true;
-				LOGGER.info("Checked element with locator: " + locaname + " and value: " + locvalue);
-			} else if (val == 0) {
-				if (elm.isSelected())
-					elm.click();
-				bStatus = true;
-				LOGGER.info("Unchecked element with locator: " + locaname + " and value: " + locvalue);
-			}
-		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE,
-					"Error checking/unchecking element with locator: " + locaname + " and value: " + locvalue, e);
-		}
-		return (bStatus);
-	}
-
-	/**
-	 * Verifies if a checkbox is selected and matches the expected result.
-	 *
-	 * @param locaname       The type of locator (e.g., "id", "name", "xpath").
-	 * @param locvalue       The value of the locator.
-	 * @param expectedResult The expected text of the selected checkbox.
-	 * @return True if the checkbox is selected and matches the expected result,
-	 *         false otherwise.
-	 */
-	public boolean chkElmSelected(String locaname, String locvalue, String expectedResult) {
-		boolean bStatus = false;
-		try {
-			WebElement elm = getElement(locaname, locvalue);
-			String sActResult = elm.getText();
-			if (elm.isSelected())
-				Assert.assertEquals(sActResult, expectedResult);
-			LOGGER.info("Checkbox with locator: " + locaname + " and value: " + locvalue
-					+ " is selected and verified with expected result: " + expectedResult);
-			bStatus = true;
-		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE,
-					"Error verifying checkbox selection with locator: " + locaname + " and value: " + locvalue, e);
-		}
-		return (bStatus);
-	}
-
-	/**
-	 * Switches the WebDriver context to a frame identified by the specified
-	 * locator.
-	 *
-	 * @param locaname The type of locator (e.g., "id", "name", "xpath").
-	 * @param locvalue The value of the locator.
-	 */
-	public void switchToFrame(String locaname, String locvalue) {
-		WebElement frm = getElement(locaname, locvalue);
-		getDriver().switchTo().frame(frm);
-		LOGGER.info("Switched to frame with locator: " + locaname + " and value: " + locvalue);
-	}
-
-	/**
 	 * Verifies if the text of a web element matches the expected result.
 	 *
 	 * @param locaname       The type of locator (e.g., "id", "name", "xpath").
@@ -266,36 +220,6 @@ public class Keywords {
 			LOGGER.log(Level.SEVERE, "Error verifying text with locator: " + locaname + " and value: " + locvalue, e);
 			return false;
 		}
-	}
-
-	/**
-	 * Handles and accepts a JavaScript alert if present.
-	 *
-	 * @return True if the alert was successfully accepted, false otherwise.
-	 */
-	public boolean acceptAlert() {
-		WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-		try {
-			Alert alt = wait.until(ExpectedConditions.alertIsPresent());
-			alt = getDriver().switchTo().alert();
-			alt.accept();
-			LOGGER.info("Alert accepted successfully.");
-			return true;
-		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, "Error accepting alert: " + e.getMessage(), e);
-			return false;
-		}
-	}
-
-	/**
-	 * Verifies if the current page title matches the expected result.
-	 *
-	 * @param expectedResult The expected page title.
-	 */
-	public void verifyPageTitle(String expectedResult) {
-		String pageTitle = getDriver().getTitle();
-		Assert.assertEquals(pageTitle, expectedResult);
-		LOGGER.info("Page title verified: " + pageTitle + " matches expected result: " + expectedResult);
 	}
 
 	/**

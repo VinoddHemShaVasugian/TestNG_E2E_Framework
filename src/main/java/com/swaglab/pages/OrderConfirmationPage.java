@@ -19,7 +19,7 @@ package com.swaglab.pages;
 
 import com.framework.library.Keywords;
 
-public class LoginPage extends Keywords {
+public class OrderConfirmationPage extends Keywords {
 
 	/**
 	 * Clicks the sign-in button on the login page.
@@ -47,13 +47,13 @@ public class LoginPage extends Keywords {
 	}
 
 	/**
-	 * Verifies that the product page displays the expected result.
+	 * Verifies that the homepage displays the expected result.
 	 *
-	 * @param expectedResult The expected text to verify on the product page.
+	 * @param expectedResult The expected text to verify on the homepage.
 	 * @return True if the expected text matches, otherwise false.
 	 */
-	public boolean verifyProductpage(String expectedResult) {
-		return verifyText("cssSelector", "span.title", expectedResult);
+	public boolean verifyHomepage(String expectedResult) {
+		return verifyText("cssSelector", "div.app_logo", expectedResult);
 	}
 
 	/**

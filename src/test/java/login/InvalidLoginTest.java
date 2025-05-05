@@ -21,7 +21,7 @@ import com.framework.library.Keywords;
 import com.framework.utilities.RandomStringGenerator;
 import com.swaglab.pages.LoginPage;
 
-public class InvalidLogin extends SuperTestNG {
+public class InvalidLoginTest extends SuperTestNG {
 
     /**
      * Test case to validate invalid login functionality.
