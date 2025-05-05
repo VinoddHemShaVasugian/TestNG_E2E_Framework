@@ -25,7 +25,6 @@ public class LoginPage extends Keywords {
 	private String userNameField = "#user-name";
 	private String passwordField = "#password";
 	private String errorMessage = "div.error-message-container h3";
-	private String productPageTitle = "span.title";
 
 	/**
 	 * Clicks the sign-in button on the login page.
@@ -53,21 +52,11 @@ public class LoginPage extends Keywords {
 	}
 
 	/**
-	 * Verifies that the product page displays the expected result.
-	 *
-	 * @param expectedResult The expected text to verify on the product page.
-	 * @return True if the expected text matches, otherwise false.
-	 */
-	public boolean verifyProductpage(String expectedResult) {
-		return verifyText("cssSelector", productPageTitle, expectedResult);
-	}
-
-	/**
 	 * Verifies that the login error message matches the expected message.
 	 *
 	 * @param loginErrorMessage The expected error message to verify.
 	 */
-	public void verifyLoginErrorMessage(String loginErrorMessage) {
-		verifyText("cssSelector", errorMessage, loginErrorMessage);
+	public boolean verifyLoginErrorMessage(String loginErrorMessage) {
+		return verifyText("cssSelector", errorMessage, loginErrorMessage);
 	}
 }

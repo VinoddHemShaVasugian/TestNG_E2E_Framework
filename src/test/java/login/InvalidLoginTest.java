@@ -19,6 +19,7 @@ import org.testng.annotations.Test;
 
 import com.baseTest.SuperTestNG;
 import com.framework.library.Keywords;
+import com.framework.library.RetryAnalyzer;
 import com.framework.utilities.RandomStringGenerator;
 import com.swaglab.pages.login.LoginPage;
 
@@ -30,14 +31,14 @@ public class InvalidLoginTest extends SuperTestNG {
 	 * @param userName The user name to be used for login.
 	 * @param password The password to be used for login.
 	 */
-	@Test(dataProvider = "invalidLogin")
+	@Test(dataProvider = "invalidLogin", retryAnalyzer = RetryAnalyzer.class)
 	public void testInvalidLogin(String userName, String password) {
 		LoginPage loginPage = new LoginPage();
 		loginPage.enterUserName(userName);
 		loginPage.enterPassword(password);
 		loginPage.clickSignIn();
 		String loginErrorMessage = Keywords.getData(stestDataFile, "Login", 2, 5);
-		Assert.assertTrue(loginPage.verifyProductpage(loginErrorMessage),
+		Assert.assertTrue(loginPage.verifyLoginErrorMessage(loginErrorMessage),
 				"Login error message is not displayed as expected.");
 	}
 

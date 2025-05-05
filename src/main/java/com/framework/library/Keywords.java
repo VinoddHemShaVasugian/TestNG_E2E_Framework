@@ -20,6 +20,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -72,6 +74,46 @@ public class Keywords {
 	}
 
 	/**
+	 * Waits for a web element to be present in the DOM using an explicit wait. This
+	 * method supports various locator types such as "id", "name", "className",
+	 * "linkText", "partialLinkText", "xpath", "cssSelector", and "tagname".
+	 *
+	 * @param locname  The type of locator (e.g., "id", "name", "xpath").
+	 * @param locvalue The value of the locator.
+	 * @return The located WebElement if found within the timeout period, or null if
+	 *         not found.
+	 * @throws IllegalArgumentException if an invalid locator type is provided.
+	 */
+
+	public WebElement getElementWithExplicitWait(String locname, String locvalue) {
+		WebElement elm = null;
+		try {
+			WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
+			if (locname.equalsIgnoreCase("id"))
+				elm = wait.until(ExpectedConditions.presenceOfElementLocated(By.id(locvalue)));
+			else if (locname.equalsIgnoreCase("name"))
+				elm = wait.until(ExpectedConditions.presenceOfElementLocated(By.name(locvalue)));
+			else if (locname.equalsIgnoreCase("className"))
+				elm = wait.until(ExpectedConditions.presenceOfElementLocated(By.className(locvalue)));
+			else if (locname.equalsIgnoreCase("linkText"))
+				elm = wait.until(ExpectedConditions.presenceOfElementLocated(By.linkText(locvalue)));
+			else if (locname.equalsIgnoreCase("partialLinkText"))
+				elm = wait.until(ExpectedConditions.presenceOfElementLocated(By.partialLinkText(locvalue)));
+			else if (locname.equalsIgnoreCase("xpath"))
+				elm = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locvalue)));
+			else if (locname.equalsIgnoreCase("cssSelector"))
+				elm = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(locvalue)));
+			else if (locname.equalsIgnoreCase("tagname"))
+				elm = wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName(locvalue)));
+			else
+				LOGGER.warning("Invalid locator name: " + locname);
+		} catch (Exception e) {
+			LOGGER.warning("Error finding element with locator: " + locname + " and value: " + locvalue);
+		}
+		return elm;
+	}
+
+	/**
 	 * Finds a web element based on the specified locator type and value.
 	 * 
 	 * @param locname  The type of locator (e.g., "id", "name", "xpath").
@@ -79,7 +121,7 @@ public class Keywords {
 	 * @return The located WebElement, or null if not found.
 	 */
 	public WebElement getElement(String locname, String locvalue) {
-		WebElement elm = null;
+		WebElement elm = getElementWithExplicitWait(locname, locvalue);
 		try {
 			getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 			if (locname.equalsIgnoreCase("id"))
@@ -186,9 +228,10 @@ public class Keywords {
 	 * @return True if the text was entered successfully, false otherwise.
 	 */
 	public boolean enterText(String locaname, String locvalue, String txt) {
+		WebElement elm = getElementWithExplicitWait(locaname, locvalue);
 		boolean bStatus = false;
 		try {
-			WebElement elm = getElement(locaname, locvalue);
+			elm = getElement(locaname, locvalue);
 			elm.clear();
 			elm.sendKeys(txt);
 			bStatus = true;
@@ -209,8 +252,9 @@ public class Keywords {
 	 * @return True if the text matches the expected result, false otherwise.
 	 */
 	public boolean verifyText(String locaname, String locvalue, String expectedResult) {
+		WebElement elm = getElementWithExplicitWait(locaname, locvalue);
 		try {
-			WebElement elm = getElement(locaname, locvalue);
+			elm = getElement(locaname, locvalue);
 			String sActResult = elm.getText();
 			Assert.assertEquals(sActResult, expectedResult);
 			LOGGER.info("Verified text with locator: " + locaname + " and value: " + locvalue
@@ -244,6 +288,7 @@ public class Keywords {
 	 * @return True if the element is displayed, false otherwise.
 	 */
 	private boolean verifyElement(String locaname, String locvalue) {
+		getElementWithExplicitWait(locaname, locvalue);
 		try {
 			return getElement(locaname, locvalue).isDisplayed();
 		} catch (Exception e) {
@@ -280,7 +325,7 @@ public class Keywords {
 	 * @param c     The column number of the cell.
 	 * @return The data from the specified cell as a String.
 	 */
-	public static String getData(String path, String Sheet, int r, int c) {
+	public static synchronized String getData(String path, String Sheet, int r, int c) {
 		FileInputStream fis = null;
 		try {
 			fis = new FileInputStream(path);

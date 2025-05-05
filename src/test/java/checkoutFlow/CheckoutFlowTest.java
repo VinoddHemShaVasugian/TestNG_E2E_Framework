@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.baseTest.SuperTestNG;
+import com.framework.library.RetryAnalyzer;
 import com.framework.utilities.RandomStringGenerator;
 import com.swaglab.library.ProjectSpecific;
 import com.swaglab.pages.checkoutFlow.CheckoutPage;
@@ -40,7 +41,7 @@ public class CheckoutFlowTest extends SuperTestNG {
 	 * on the final confirmation page. 7. Complete the order and verify the order
 	 * confirmation messages.
 	 */
-	@Test()
+	@Test(retryAnalyzer = RetryAnalyzer.class)
 	public void testCheckoutFlow() {
 		// Log in to the application
 		projectSpecific.login();

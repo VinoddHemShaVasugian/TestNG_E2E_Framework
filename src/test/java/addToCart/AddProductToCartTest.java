@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.baseTest.SuperTestNG;
+import com.framework.library.RetryAnalyzer;
 import com.swaglab.library.ProjectSpecific;
 import com.swaglab.pages.checkoutFlow.CheckoutPage;
 import com.swaglab.pages.homepage.HomePage;
@@ -25,7 +26,7 @@ public class AddProductToCartTest extends SuperTestNG {
 	 * navigates to the cart page, and verifies that the product is present in the
 	 * cart and count of added item.
 	 */
-	@Test()
+	@Test(retryAnalyzer = RetryAnalyzer.class)
 	public void testAddToCart() {
 		projectSpecific.login();
 		sProductName = homePage.getFirstProductName();
