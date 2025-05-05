@@ -11,4 +11,7 @@
 			<class name="login.InvalidLogin" />
 		</classes>
 	</test> <!-- LoginTest -->
+		<listeners>
+		<listener class-name="io.qameta.allure.testng.AllureTestNg" />
+	</listeners>
 </suite> <!-- LoginSuite -->
