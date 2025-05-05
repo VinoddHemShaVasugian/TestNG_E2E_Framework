@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "./com/test/resources/testng-1.0.dtd">
+<suite name="MethodLevelParallelExecutionSuite" parallel="methods" thread-count="2">
+    <test name="LoginTests">
+        <classes>
+      <class name="login.ValidLogin"/>
+      <class name="login.InvalidLogin"/>
+        </classes>
+    </test>
+</suite>

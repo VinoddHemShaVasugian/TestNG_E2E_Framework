@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "./com/test/resources/testng-1.0.dtd">
+<suite name="TestLevelParallelExecutionSuite" parallel="tests" thread-count="2">
+	<test name="PositiveScenarios">
+		<classes>
+			<class name="login.ValidLogin" />
+		</classes>
+	</test>
+	<test name="NegativeScenarios">
+		<classes>
+			<class name="login.InvalidLogin" />
+		</classes>
+	</test> <!-- LoginTest -->
+</suite> <!-- LoginSuite -->
