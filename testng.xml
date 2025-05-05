@@ -5,7 +5,6 @@
 		<classes>
 			<class name="login.ValidLogin" />
 			<class name="login.InvalidLogin" />
-			<class name="com.baseTest.SuperTestNG" />
 		</classes>
 	</test> <!-- Test -->
 	<listeners>
