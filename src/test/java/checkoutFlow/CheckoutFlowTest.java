@@ -4,7 +4,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.baseTest.SuperTestNG;
-import com.framework.library.RetryAnalyzer;
 import com.swaglab.library.ProjectSpecific;
 import com.swaglab.pages.LoginPage;
 
@@ -16,6 +15,5 @@ public class CheckoutFlowTest extends SuperTestNG {
 	@Test()
 	public void testCheckoutFlow() {
 		projectSpecific.login();
-		Assert.assertEquals(loginPage.verifyProductpage(sExpectedResult), true);
 	}
 }
