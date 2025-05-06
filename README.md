@@ -4,6 +4,7 @@ TestNG framework for Java Selenium developers integrated with Allure Report and 
 
 ## Key Features
 - **Parallel Execution**: Run multiple tests simultaneously to save time.
+- **Retry Analyzer**: Re-Run failed tests automatically without manual intervention, improving test reliability to avoid Flaky Test.
 - **Random Data Generator**: Generate dynamic test data for robust testing.
 - **Excel Data Integration**: Read test data from Excel files for data-driven testing.
 - **TestNG Data Provider**: Implement data-driven testing using TestNG's `@DataProvider`.
@@ -23,22 +24,22 @@ TestNG framework for Java Selenium developers integrated with Allure Report and 
 2. Navigate to the project directory:
 	cd TestNG_E2E_Framework
 3. Install dependencies:
-mvn clean install
+	mvn clean install
 4. Install Allure
-iex (new-object net.webclient).downloadstring('https://get.scoop.sh'), 
-scoop install allure, 
-Verify the installation by running below cmd: 
-allure --version
+	iex (new-object net.webclient).downloadstring('https://get.scoop.sh'), 
+	scoop install allure, 
+	Verify the installation by running below cmd: 
+	allure --version
 
 ## Usage
 1. Configure the test data in the Excel file located in the `resources` folder.
 2. Update the `testng.xml` file to include your test classes and configure parallel execution if needed.
 3. Run the tests using Maven:
-mvn clean test -DsuiteFile=/TestNG_E2E_Framework/testng.xml or ran with bat file (RunTest.bat). 
-If need to run test parallel based on methods level - use ParallelMethodLevel.xml. 
-If need to run test parallel based on tests level - use ParallelTestsLevel.xml.
+	mvn clean test -DsuiteFile=/TestNG_E2E_Framework/testng.xml or ran with bat file (RunTest.bat). 
+	If need to run test parallel based on methods level - use ParallelMethodLevel.xml. 
+	If need to run test parallel based on tests level - use ParallelTestsLevel.xml.
 4. View the test results in the Allure Report:
-allure serve
+	allure serve
 
 ## Project Structure
 - `src/main/java`: Contains the main framework code and project specific libraries.
@@ -47,5 +48,4 @@ allure serve
 - `testng.xml`: TestNG configuration file.
 
 ## Reporting
-- **Allure Report**: After test execution, generate and view the Allure report for detailed insights into the test results using below command.
-allure serve
+- **Allure Report**: After test execution, generate and view the Allure report for detailed insights into the test results using following command 'allure serve'

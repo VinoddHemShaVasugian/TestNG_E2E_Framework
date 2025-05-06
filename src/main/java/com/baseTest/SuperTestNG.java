@@ -20,6 +20,7 @@ import java.time.Duration;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 
 import com.framework.library.Keywords;
@@ -42,13 +43,12 @@ public class SuperTestNG {
 		String browserType = Keywords.getData(sConfigFile, "LAUNCH", 0, 2);
 		Keywords keywords = new Keywords(browserType);
 		driver.set(keywords.getDriver());
-		WebDriver currentDriver = getDriver();
-		currentDriver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
-		currentDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-		currentDriver.manage().window().maximize();
-		currentDriver.manage().deleteAllCookies();
+		getDriver().manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
+		getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+		getDriver().manage().window().maximize();
+		getDriver().manage().deleteAllCookies();
 		String url = Keywords.getData(sConfigFile, "LAUNCH", 1, 2);
-		currentDriver.get(url);
+		getDriver().get(url);
 	}
 
 	/**
@@ -61,6 +61,10 @@ public class SuperTestNG {
 			getDriver().close();
 			driver.remove();
 		}
+	}
+
+	@AfterSuite
+	public void afterSuite() {
 		try {
 			ProcessBuilder processBuilder = new ProcessBuilder("taskkill", "/f", "/im", "chromedriver.exe");
 			processBuilder.redirectErrorStream(true);

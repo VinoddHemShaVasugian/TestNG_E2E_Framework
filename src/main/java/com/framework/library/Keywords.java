@@ -57,14 +57,25 @@ public class Keywords {
 			driver = new FirefoxDriver();
 		} else if (browser.equals("Google Chrome")) {
 			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--remote-allow-origins=*");
-			options.addArguments("--no-sandbox");
-			options.addArguments("--disable-dev-shm-usage");
-			options.addArguments("--disable-gpu");
-			options.addArguments("--disable-setuid-sandbox");
-			options.addArguments("--ignore-https-errors");
-			options.addArguments("--ignore-certificate-errors");
+			options.addArguments("--disable-save-password-bubble"); // Disable the password manager popup
+			options.addArguments("--disable-notifications"); // Disable browser notifications
+			options.addArguments("--remote-allow-origins=*"); // Allow remote origins
+			options.addArguments("--no-sandbox"); // Disable sandbox for better compatibility
+			options.addArguments("--disable-dev-shm-usage"); // Disable shared memory usage
+			options.addArguments("--disable-gpu"); // Disable GPU rendering
+			options.addArguments("--disable-setuid-sandbox"); // Disable setuid sandbox
+			options.addArguments("--ignore-https-errors"); // Ignore HTTPS certificate errors
+			options.addArguments("--ignore-certificate-errors"); // Ignore certificate errors
+			options.addArguments("--allow-insecure-localhost"); // Allow insecure localhost connections
+			options.addArguments("--disable-infobars"); // Disable infobars
+			options.addArguments("--disable-popup-blocking"); // Disable popup blocking
+			options.addArguments("--disable-extensions"); // Disable browser extensions
+			options.addArguments("--disable-automation"); // Disable automation flags
+
+			// Set Chrome to accept insecure certificates
 			options.addArguments(CapabilityType.ACCEPT_INSECURE_CERTS);
+
+			// Enable verbose logging for ChromeDriver
 			System.setProperty("webdriver.chrome.verboseLogging", "true");
 			WebDriverManager.chromedriver().setup();
 			driver = new ChromeDriver(options);
