@@ -58,7 +58,8 @@ public class SuperTestNG {
 	@AfterMethod
 	public void tearDown() {
 		if (getDriver() != null) {
-			getDriver().close();
+//			getDriver().close();
+			getDriver().quit();
 			driver.remove();
 		}
 	}
